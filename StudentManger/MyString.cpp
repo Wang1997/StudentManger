@@ -145,6 +145,19 @@ CMyString & CMyString::operator+=(const char *str)
     return *this;
 }
 
+CMyString & CMyString::operator+=(char ch)
+{
+    char str[] = { ch,0 };
+    return *this += str;
+}
+
+CMyString & CMyString::operator+=(int num)
+{
+    char str[20];
+    sprintf(str, "%d", num);
+    return *this += str;
+}
+
 CMyString & CMyString::append(const CMyString &other)
 {
     return *this += other.m_buf;
@@ -153,6 +166,16 @@ CMyString & CMyString::append(const CMyString &other)
 CMyString & CMyString::append(const char *other)
 {
     return *this += other;
+}
+
+CMyString & CMyString::append(char ch)
+{
+    return *this += ch;
+}
+
+CMyString & CMyString::append(int num)
+{
+    return *this += num;
 }
 
 CMyString & CMyString::assign(const CMyString &other)
@@ -287,7 +310,7 @@ CMyString & CMyString::erase(int pos, int n)
     return *this;
 }
 
-const char * CMyString::c_str()
+const char * CMyString::c_str() const
 {
     return m_buf;
 }

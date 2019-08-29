@@ -52,7 +52,7 @@ private:
 
 private:
     PNode root;
-    static const int BF = 1;
+    static const int BF = 2;
 };
 
 template<typename TYPE>

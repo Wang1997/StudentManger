@@ -25,8 +25,12 @@ public: //Element access
 public: //Modifiers
     CMyString& operator+= (const CMyString&); //增加
     CMyString& operator+= (const char*);
+    CMyString& operator+= (char ch);
+    CMyString& operator+= (int num);
     CMyString& append(const CMyString&); //追加
     CMyString& append(const char*);
+    CMyString& append(char ch);
+    CMyString& append(int num);
     CMyString& assign(const CMyString&); //替换
     CMyString& assign(const char*);
     CMyString& insert(const CMyString&,int pos = 0); //插入
@@ -34,7 +38,7 @@ public: //Modifiers
     CMyString& erase(int pos, int n); //删除
 
 public: //String operations
-    const char * c_str();
+    const char * c_str() const;
     CMyString substr(int pos,int n = -1); //截取子串
     int find(const CMyString&); //kmp快速查找
     int find(const char*);
