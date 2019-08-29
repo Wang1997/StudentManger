@@ -2,13 +2,11 @@
 #include "MyStack.hpp"
 #include "MyQueue.hpp"
 
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
-
 //AVL 非递归版实现
 template<typename TYPE>
 class AVLTree
 {
-    typedef void(*showFun)(TYPE& elem, int height); //打印回调
+    typedef void(*showFun)(TYPE& elem, int diffHeight, int deep); //打印回调
 private:
     typedef struct Node
     {
@@ -16,9 +14,9 @@ private:
         Node *left;
         Node *right;
         Node *father; //父亲节点
-        int height;
+        int diffHeight; //存放高度差
         Node(const TYPE& elem=TYPE{}, Node *father=nullptr,Node *left=nullptr,
-                Node *right = nullptr,int height = 0);
+                Node *right = nullptr,int diffHeight = 0);
     }*PNode;
 
 public:
@@ -40,12 +38,14 @@ private:
     PNode find(PNode tree,const TYPE& elem) const;
     void insert(PNode tree, const TYPE& elem);
 
-    int getHeight(PNode tree) const; //获取高度
-    int calcHeight(PNode tree) const; //计算高度
-    PNode rotateByLeft(PNode tree); //左边旋
-    PNode rotateByRight(PNode tree); //右边旋
-    PNode rotateByDoubleLeft(PNode tree); //左双旋
-    PNode rotateByDoubleRight(PNode tree); //右双旋
+    int getHeight(PNode tree) const; //获取高度差
+    int calcHeight(PNode tree) const; //计算高度差
+    void calcHeightWithLeft(PNode tree); //重新计算高度差(左边旋)
+    void calcHeightWithRight(PNode tree); //重新计算高度差(右边旋)
+    PNode rotateWithLeft(PNode tree); //左边旋
+    PNode rotateWithRight(PNode tree); //右边旋
+    PNode rotateWithDoubleLeft(PNode tree); //左双旋
+    PNode rotateWithDoubleRight(PNode tree); //右双旋
     void balance(PNode tree); //从该节点一直往上平衡
 
 private:
@@ -55,8 +55,8 @@ private:
 
 template<typename TYPE>
 inline AVLTree<TYPE>::Node::Node(const TYPE& elem = TYPE{}, Node *father = nullptr, Node *left = nullptr,
-    Node *right = nullptr, int height = 0)
-    :elem(elem),father(father),left(left),right(right),height(height)
+    Node *right = nullptr, int diffHeight = 0)
+    :elem(elem),father(father),left(left),right(right),diffHeight(diffHeight)
 {}
 
 template<typename TYPE>
@@ -73,9 +73,9 @@ inline AVLTree<TYPE>::~AVLTree()
     {
         PNode top = queue.front();
         queue.pop();
-        if (top->left != nullptr)
+        if(top->left != nullptr)
             queue.push(top->left);
-        else if (top->right != nullptr)
+        else if(top->right != nullptr)
             queue.push(top->right);
         delete top;
         top = nullptr;
@@ -112,65 +112,22 @@ inline void AVLTree<TYPE>::preOrder(showFun fun) const
 {
     PNode theNode = root;
     MyStack<PNode> stack;
+    int deep = 0;
     while (theNode || !stack.empty())
     {
         while (theNode)
         {
-            fun(theNode->elem, theNode->height);
+            fun(theNode->elem,theNode->diffHeight, deep);
             stack.push(theNode);
             theNode = theNode->left;
+            deep++;
         }
         PNode top = stack.top();
         stack.pop();
-        if (top->right != nullptr)
+        if(top->right != nullptr)
             theNode = top->right;
-    }
-}
-
-template<typename TYPE>
-inline void AVLTree<TYPE>::inOrder(showFun fun) const
-{
-    PNode theNode = root;
-    MyStack<PNode> stack;
-    while (theNode || !stack.empty())
-    {
-        while (theNode)
-        {
-            stack.push(theNode);
-            theNode = theNode->left;
-        }
-        PNode top = stack.top();
-        stack.pop();
-        fun(top->elem, top->height);
-        if (top->right != nullptr)
-            theNode = top->right;
-    }
-}
-
-template<typename TYPE>
-inline void AVLTree<TYPE>::postOrder(showFun fun) const
-{
-    PNode theNode = root;
-    PNode lastNode = root;
-    MyStack<PNode> stack;
-    while (theNode || !stack.empty())
-    {
-        while (theNode)
-        {
-            stack.push(theNode);
-            theNode = theNode->left;
-        }
-        PNode top = stack.top();
-        if (top->right == nullptr || top->right == lastNode)
-        {
-            fun(top->elem, top->height);
-            stack.pop();
-            lastNode = top;
-        }
         else
-        {
-            theNode = top->right;
-        }
+            deep--;
     }
 }
 
@@ -265,28 +222,83 @@ template<typename TYPE>
 inline int AVLTree<TYPE>::getHeight(PNode tree) const
 {
     if (tree == nullptr)
-        return -1; //叶子为0,使用null为-1
+        return -1;
 
-    return tree->height;
+    return tree->diffHeight;
 }
 
+// 这里高度差计算有问题！！先使用旧方法
 template<typename TYPE>
 inline int AVLTree<TYPE>::calcHeight(PNode tree) const
 {
-    return MAX(getHeight(tree->left), getHeight(tree->right)) + 1;
+    if (tree->left != nullptr && tree->right != nullptr)
+    {
+        int leftH = abs(tree->left->diffHeight);
+        int rightH = abs(tree->right->diffHeight);
+        return leftH - rightH;
+    }
+    else
+    {
+        if (tree->left == nullptr && tree->right == nullptr)
+        {
+            return 0;
+        }
+        else if (tree->left == nullptr)
+        {
+            return (abs(tree->right->diffHeight) + 1) * -1;
+        }
+        else
+        {
+            return abs(tree->left->diffHeight) + 1;
+        }
+    }
 }
 
 template<typename TYPE>
-inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateByLeft(PNode tree)
+inline void AVLTree<TYPE>::calcHeightWithLeft(PNode tree)
+{
+    int& Tk1 = tree->right->diffHeight;
+    int& Tk2 = tree->diffHeight;
+    //先更新TK1
+    if(Tk2 >= 0)
+        Tk1 -= (Tk2 + 1);
+    else
+        --Tk1;
+    //再更新TK2
+    if (Tk1 >= 0)
+        --Tk2;
+    else
+        Tk2 += Tk1 - 1;
+}
+
+template<typename TYPE>
+inline void AVLTree<TYPE>::calcHeightWithRight(PNode tree)
+{
+    int& Tk1 = tree->left->diffHeight;
+    int& Tk2 = tree->diffHeight;
+    //先更新TK1
+    if(Tk2 >= 0)
+        ++Tk1;
+    else
+        Tk1 += (1-Tk2);
+    //再更新TK2
+    if (Tk1 >= 0)
+        Tk2 += Tk1 + 1;
+    else
+        ++Tk2;
+}
+
+template<typename TYPE>
+inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateWithLeft(PNode tree)
 {
     PNode rotateNode = tree->left;
     //修正tree与rotateNode->right
     tree->left = rotateNode->right;
-    if (rotateNode->right != nullptr)
+    if(rotateNode->right != nullptr)
         rotateNode->right->father = tree;
     //修正tree->father与rotateNode
     rotateNode->father = tree->father;
-    if (tree->father == nullptr)
+    if(tree->father == nullptr)
         root = rotateNode;
     else if (tree == tree->father->right)
         tree->father->right = rotateNode;
@@ -296,20 +308,19 @@ inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateByLeft(PNode tree)
     tree->father = rotateNode;
     rotateNode->right = tree;
     
-    //修正高度
-    tree->height = calcHeight(tree);
-    rotateNode->height = calcHeight(rotateNode);
-
+    //修正高度差
+    calcHeightWithLeft(rotateNode);
+    
     return rotateNode;
 }
 
 template<typename TYPE>
-inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateByRight(PNode tree)
+inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateWithRight(PNode tree)
 {
     PNode rotateNode = tree->right;
     //修正rotateNode->right与tree的关联
     tree->right = rotateNode->left;
-    if (rotateNode->left != nullptr)
+    if(rotateNode->left != nullptr)
         rotateNode->left->father = tree;
     //修正rotateNode 与 tree->father
     rotateNode->father = tree->father;
@@ -323,25 +334,24 @@ inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateByRight(PNode tree)
     rotateNode->left = tree;
     tree->father = rotateNode;
 
-    //计算高度
-    tree->height = calcHeight(tree);
-    rotateNode->height = calcHeight(rotateNode);
+    //修正高度差
+    calcHeightWithRight(rotateNode);
 
     return rotateNode;
 }
 
 template<typename TYPE>
-inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateByDoubleLeft(PNode tree)
+inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateWithDoubleLeft(PNode tree)
 {
-    rotateByRight(tree->left);
-    return rotateByLeft(tree);
+    rotateWithRight(tree->left);
+    return rotateWithLeft(tree);
 }
 
 template<typename TYPE>
-inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateByDoubleRight(PNode tree)
+inline typename AVLTree<TYPE>::PNode AVLTree<TYPE>::rotateWithDoubleRight(PNode tree)
 {
-    rotateByLeft(tree->right);
-    return rotateByRight(tree);
+    rotateWithLeft(tree->right);
+    return rotateWithRight(tree);
 }
 
 template<typename TYPE>
@@ -349,32 +359,30 @@ inline void AVLTree<TYPE>::balance(PNode tree)
 {
     while (tree)
     {
-        tree->height = calcHeight(tree);
+       tree->diffHeight = calcHeight(tree);
 
-        int leftHeight = getHeight(tree->left);
-        int rightHeight = getHeight(tree->right);
-        if (abs(leftHeight - rightHeight) > BF) //需要平衡
+        if (abs(tree->diffHeight) > BF) //需要平衡
         {            
-            if (leftHeight > rightHeight) //左旋
+            if (tree->diffHeight > 0) //左边旋
             {
-                if (getHeight(tree->left->left) > getHeight(tree->left->right))
+                if (tree->left->diffHeight > 0)
                 {//左左
-                    tree = rotateByLeft(tree);
+                    tree = rotateWithLeft(tree);
                 }
                 else
                 {//左右
-                    tree = rotateByDoubleLeft(tree);
+                    tree = rotateWithDoubleLeft(tree);
                 }
             }
-            else //右旋
+            else //右边旋
             {
-                if (getHeight(tree->right->right) > getHeight(tree->right->left))
+                if (tree->right->diffHeight < 0)
                 {//右右
-                    tree = rotateByRight(tree);
+                    tree = rotateWithRight(tree);
                 }
                 else
                 {//右左
-                    tree = rotateByDoubleRight(tree);
+                    tree = rotateWithDoubleRight(tree);
                 }
             }
         }
