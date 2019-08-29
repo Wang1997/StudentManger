@@ -13,14 +13,16 @@ int main(int argc,char *argv[])
     AVLTree<int> tree;
     tree.insert(12);
     tree.insert(8);
-    tree.insert(5);
+    /*tree.insert(5);
     tree.insert(9);
     tree.insert(10);
     tree.insert(18);
     tree.insert(20);
     tree.insert(22);
-    tree.insert(21);
+    tree.insert(21);*/
     
+    //tree.remove(10);
+    tree.remove(12);
     cout << "ǰ" << endl;
     tree.preOrder(show);
     cout << endl;

@@ -29,6 +29,7 @@ public:
     TYPE& findMin() const;
     TYPE& findMax() const;
     void insert(const TYPE& elem); //插入元素
+    void remove(const TYPE& elem); //移除元素
 
     void preOrder(showFun fun) const; //前序
     void inOrder(showFun fun) const; //中序
@@ -39,6 +40,7 @@ private:
     PNode findMax(PNode tree) const;
     PNode find(PNode tree,const TYPE& elem) const;
     void insert(PNode tree, const TYPE& elem);
+    void remove(PNode tree, const TYPE& elem);
 
     int getHeight(PNode tree) const; //获取高度
     int calcHeight(PNode tree) const; //计算高度
@@ -105,6 +107,12 @@ template<typename TYPE>
 inline void AVLTree<TYPE>::insert(const TYPE& elem)
 {
     insert(root,elem);
+}
+
+template<typename TYPE>
+inline void AVLTree<TYPE>::remove(const TYPE & elem)
+{
+    remove(root,elem);
 }
 
 template<typename TYPE>
@@ -262,6 +270,59 @@ inline void AVLTree<TYPE>::insert(PNode tree, const TYPE & elem)
 }
 
 template<typename TYPE>
+inline void AVLTree<TYPE>::remove(PNode tree, const TYPE & elem)
+{
+    while (tree)
+    {
+        if (elem > tree->elem)
+        {
+            tree = tree->right;
+        }
+        else if (elem < tree->elem)
+        {
+            tree = tree->left;
+        }
+        else //相等
+        {
+            
+            if (tree->left != nullptr && tree->right != nullptr)
+            {
+                PNode minNode = findMin(tree->right);
+                tree->elem = minNode->elem;
+                tree = minNode; //换成删除minNode
+            }
+            
+            PNode delNode = tree;
+            if (tree == root)
+            {
+                root = (tree->left != nullptr) ? tree->left : tree->right;
+                root->father = nullptr;
+                delete delNode;
+                balance(root);
+                return;
+            }
+            else
+            {
+                PNode father = tree->father;
+                if (father->left == tree)
+                {
+                    father->left =
+                        (tree->left != nullptr) ? tree->left : tree->right;
+                }
+                else
+                {
+                    father->right =
+                        (tree->left != nullptr) ? tree->left : tree->right;
+                }
+                delete delNode;
+                balance(father);
+                return;
+            }
+        }
+    }
+}
+
+template<typename TYPE>
 inline int AVLTree<TYPE>::getHeight(PNode tree) const
 {
     if (tree == nullptr)
@@ -357,7 +418,7 @@ inline void AVLTree<TYPE>::balance(PNode tree)
         {            
             if (leftHeight > rightHeight) //左旋
             {
-                if (getHeight(tree->left->left) > getHeight(tree->left->right))
+                if (getHeight(tree->left->left) >= getHeight(tree->left->right))
                 {//左左
                     tree = rotateByLeft(tree);
                 }
@@ -368,7 +429,7 @@ inline void AVLTree<TYPE>::balance(PNode tree)
             }
             else //右旋
             {
-                if (getHeight(tree->right->right) > getHeight(tree->right->left))
+                if (getHeight(tree->right->right) >= getHeight(tree->right->left))
                 {//右右
                     tree = rotateByRight(tree);
                 }

@@ -111,7 +111,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.hpp" />
-    <ClInclude Include="AVLTree__.hpp" />
     <ClInclude Include="MyQueue.hpp" />
     <ClInclude Include="MyStack.hpp" />
     <ClInclude Include="MyString.h" />
