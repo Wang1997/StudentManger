@@ -113,6 +113,7 @@
     <ClInclude Include="AVLTree.hpp" />
     <ClInclude Include="Elem.h" />
     <ClInclude Include="HashTable.hpp" />
+    <ClInclude Include="MyException.h" />
     <ClInclude Include="MyQueue.hpp" />
     <ClInclude Include="MyStack.hpp" />
     <ClInclude Include="MyString.h" />
@@ -123,6 +124,7 @@
   <ItemGroup>
     <ClCompile Include="Elem.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MyException.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Postion.cpp" />
     <ClCompile Include="Ref.cpp" />

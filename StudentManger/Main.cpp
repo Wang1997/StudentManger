@@ -1,21 +1,22 @@
 #include<cstdlib>
 #include <iostream>
-#include "Elem.h"
+#include "MyException.h"
 using namespace std;
+
+void fun()
+{
+    throw CMyInputException("输入长度过长");
+}
 
 int main(int argc,char *argv[])
 {
+    try 
     {
-        CMyString str("hahah");
-        CStudent *stu = new CStudent(str);
-        CPostion *pos = new CPostion(0, stu->getTotalSize());
-        CElem elem1(stu, pos);
-        CElem elem2(new CPostion(4));
-        {
-            CElem elem3(elem1);
-        }
-        CElem elem4 = elem2;
-        elem4 = elem1;
+        fun();
+    }
+    catch (CMyException e)
+    {
+        cout << e.what();
     }
     system("pause");
 }
