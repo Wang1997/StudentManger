@@ -14,7 +14,7 @@ public:
 template<typename Object,typename KeyHash=Hash<Object>>
 class HashTable
 {
-public:
+private:
     struct Node
     {
         Object elem;
@@ -23,7 +23,7 @@ public:
         Node(const Object& elem,Node *next = nullptr, Node *prev = nullptr);
         ~Node();
     };
-public:
+public: //该迭代器用于遍历链表
     class Iterator
     {
         friend HashTable;
@@ -47,13 +47,14 @@ public:
     HashTable(int tableSize = 101);
     ~HashTable();
     void insert(const Object& elem); //插入一个元素
+    void remove(const Object& elem); //删除元素
     Iterator remove(Iterator it); //移除一个元素
     Iterator begin(const Object& elem);
     Iterator operator[] (const Object& elem);
 private:
     unsigned int hash(const Object& elem);
-    void releaseTable(Node *hashTable);
-public:
+    void releaseTable(Node *hashTableNode);
+private:
     Node **hashTable;
     KeyHash keyHash;
     int tableSize;
@@ -104,6 +105,14 @@ inline void HashTable<Object, KeyHash>::insert(const Object & elem)
     size++;
 }
 
+template<typename Object, typename KeyHash>
+inline void HashTable<Object, KeyHash>::remove(const Object & elem)
+{
+    int index = hash(elem);
+    releaseTable(hashTable[index]);
+    hashTable[index] = nullptr;
+}
+
 template<typename Object,typename KeyHash>
 inline typename HashTable<Object, KeyHash>::Iterator
         HashTable<Object, KeyHash>::remove(Iterator it)
@@ -150,13 +159,13 @@ inline unsigned int HashTable<Object, KeyHash>::hash(const Object& elem)
 }
 
 template<typename Object,typename KeyHash>
-inline void HashTable<Object, KeyHash>::releaseTable(Node * hashTable)
+inline void HashTable<Object, KeyHash>::releaseTable(Node * hashTableNode)
 {
-    while (hashTable)
+    while (hashTableNode)
     {
-        Node *next = hashTable->next;
-        delete hashTable;
-        hashTable = next;
+        Node *next = hashTableNode->next;
+        delete hashTableNode;
+        hashTableNode = next;
     }
 }
 

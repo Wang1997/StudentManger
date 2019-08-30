@@ -88,7 +88,7 @@ void test1()
     //tableOut << "totalNum: " << totalNum << endl;
     //tableOut << "maxNum: " << maxNum << endl;
 }
-
+/*
 void test2()
 {
     HashTable<int> hash(2);
@@ -100,11 +100,59 @@ void test2()
         cout << *it << endl;
         ++it;
     }
+}*/
+
+class TreeKeyCompare
+{
+public:
+    int operator()(const int& t1, const int& t2)
+    {
+        int num1 = t1 % 4;
+        int num2 = t2 % 4;
+        if (num1 > num2)
+            return 1;
+        else if (num1 < num2)
+            return -1;
+        else
+            return 0;
+    }
+};
+
+void test3()
+{
+    AVLTree<int,TreeKeyCompare> tree;
+    tree.insert_equal(2);
+    tree.insert_equal(1);
+    tree.insert_equal(0);
+    tree.insert_equal(3);
+    tree.insert_equal(4);
+    tree.insert_equal(8);
+    tree.insert_equal(12);
+
+
+    AVLTree<int, TreeKeyCompare>::Iterator it = tree.find(0);
+    it = tree.remove(it);
+    while (!it.isEnd())
+    {
+        cout << *it << endl;
+        ++it;
+    }
+    tree.remove(tree.find(1));
+
+    cout << "Ç°" << endl;
+    tree.preOrder(show);
+    cout << endl;
+    cout << "ÖÐ" << endl;
+    tree.inOrder(show);
+    cout << endl;
+    cout << "ºó" << endl;
+    tree.postOrder(show);
+    cout << endl;
 }
 
 
 int main(int argc,char *argv[])
 {
-    test2();
+    test3();
     system("pause");
 }
