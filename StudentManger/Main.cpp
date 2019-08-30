@@ -39,59 +39,72 @@ void test()
 
 void test1()
 {
-    cout << "开始生成树数据" <<endl;
-    /*AVLTree<int> tree;
-    for (int i = 1; i <= 1000000; ++i)
+    //cout << "开始生成树数据" <<endl;
+    //AVLTree<int> tree;
+    //for (int i = 1; i <= 1000000; ++i)
+    //{
+    //    tree.insert(i);
+    //}
+    //cout << "开始生成hash数据" << endl;
+    //const int size = 29989;
+    ////const int size = 39989;
+    //srand(time(NULL));
+    //char randomStr[] = "qwertyuyiiopasdfghjklzxcvbnmWERTYUIOPASDFGHJKKLZXCVBNM";
+    //int randomStrLen = strlen(randomStr);
+    //HashTable<CMyString,int> table(size);
+    //for (int i = 1; i <= 1000000; ++i)
+    //{
+    //    int nameNum = rand() % 12 + 1;
+    //    CMyString str;
+    //    for (int i = 0; i < nameNum; ++ i)
+    //    {
+    //        str.append(randomStr[rand()% randomStrLen]);
+    //    }
+    //    table.insert(str,i);
+    //}
+    //cout << "hash完成..开始写数据" << endl;
+    //ofstream tableOut;
+    //tableOut.open("./hashTable.txt");
+    //int totalNum = 0;
+    //int maxNum = 0;
+    //for (int i = 0; i < size; ++i)
+    //{
+    //    tableOut << i << " :";
+    //    if (table.hashTable[i] != nullptr)
+    //    {
+    //        int num = 0;
+    //        HashTable<CMyString, int>::Node *node = table.hashTable[i];
+    //        while (node)
+    //        {
+    //            tableOut << node->key << "*" << node->value << " ";
+    //            node = node->next;
+    //            totalNum++;
+    //            num++;
+    //        }
+    //        maxNum = MAX(maxNum,num);
+    //    }
+    //    tableOut << endl;
+    //}
+    //tableOut << "totalNum: " << totalNum << endl;
+    //tableOut << "maxNum: " << maxNum << endl;
+}
+
+void test2()
+{
+    HashTable<int> hash(2);
+    for(int i=1;i <= 4;++i)
+        hash.insert(i);
+    HashTable<int>::Iterator it = hash.begin(0);
+    while (!it.isEnd())
     {
-        tree.insert(i);
-    }*/
-    cout << "开始生成hash数据" << endl;
-    const int size = 29989;
-    //const int size = 39989;
-    srand(time(NULL));
-    char randomStr[] = "qwertyuyiiopasdfghjklzxcvbnmWERTYUIOPASDFGHJKKLZXCVBNM";
-    int randomStrLen = strlen(randomStr);
-    HashTable<CMyString,int> table(size);
-    for (int i = 1; i <= 1000000; ++i)
-    {
-        int nameNum = rand() % 12 + 4;
-        CMyString str;
-        for (int i = 0; i < nameNum; ++ i)
-        {
-            str.append(randomStr[rand()% randomStrLen]);
-        }
-        table.insert(str,i);
+        cout << *it << endl;
+        ++it;
     }
-    cout << "hash完成..开始写数据" << endl;
-    ofstream tableOut;
-    tableOut.open("./hashTable.txt");
-    int totalNum = 0;
-    int maxNum = 0;
-    for (int i = 0; i < size; ++i)
-    {
-        tableOut << i << " :";
-        if (table.hashTable[i] != nullptr)
-        {
-            int num = 0;
-            HashTable<CMyString, int>::Node *node = table.hashTable[i];
-            while (node)
-            {
-                tableOut << node->key << "*" << node->value << " ";
-                node = node->next;
-                totalNum++;
-                num++;
-            }
-            maxNum = MAX(maxNum,num);
-        }
-        tableOut << endl;
-    }
-    tableOut << "totalNum: " << totalNum << endl;
-    tableOut << "maxNum: " << maxNum << endl;
 }
 
 
 int main(int argc,char *argv[])
 {
-    test1();
+    test2();
     system("pause");
 }
