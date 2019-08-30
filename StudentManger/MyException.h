@@ -25,3 +25,12 @@ public:
     ~CMyNotFindException();
 };
 
+
+//文件操作异常
+class CMyFileException : public CMyException
+{
+public:
+    CMyFileException(char *msg);
+    ~CMyFileException();
+};
+

@@ -21,3 +21,10 @@ CMyNotFindException::CMyNotFindException(char *msg) :CMyException(msg)
 CMyNotFindException::~CMyNotFindException()
 {
 }
+
+CMyFileException::CMyFileException(char *msg) :CMyException(msg)
+{
+}
+CMyFileException::~CMyFileException()
+{
+}

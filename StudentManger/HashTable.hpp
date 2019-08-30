@@ -7,7 +7,7 @@ class Hash
 public:
     unsigned int operator()(const Object& elem)
     {
-        return elem;
+        return (unsigned int)elem;
     }
 };
 
