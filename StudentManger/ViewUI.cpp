@@ -4,7 +4,7 @@ using namespace std;
 
 void CViewUI::input(char * data, int maxLen)
 {
-    clear();
+    clearStream();
     cin.getline(data,maxLen); //ø…“‘∂¡»ÎmaxLen-1
 }
 
@@ -13,11 +13,21 @@ void CViewUI::newLine()
     cout << endl;
 }
 
-void CViewUI::clear()
+void CViewUI::clearStream()
 {
     cin.clear();
     cin.sync();
     rewind(stdin);
+}
+
+void CViewUI::clearScreen()
+{
+    system("cls");
+}
+
+void CViewUI::pause()
+{
+    system("pause");
 }
 
 

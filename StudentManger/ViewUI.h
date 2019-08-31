@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 /*
 用于输入数据和界面交互
@@ -9,23 +10,27 @@ public:
     template<typename TYPE>
     static void show(TYPE& data,bool flag=false);
     template<typename TYPE>
-    static void input(TYPE& data);
+    static TYPE input();
     static void input(char* data,int maxLen);
     static void newLine();
-    static void clear();
+    static void clearStream();
+    static void clearScreen();
+    static void pause();
 };
 
 template<typename TYPE>
 void CViewUI::show(TYPE& data, bool flag)
 {
-    cout << data;
+    std::cout << data;
     if(flag)
         newLine();
 }
 
 template<typename TYPE>
-inline void CViewUI::input(TYPE & data)
+inline TYPE CViewUI::input()
 {
-    clear();
-    cin >> data;
+    clearStream();
+    TYPE data;
+    std::cin >> data;
+    return data;
 }

@@ -1,19 +1,10 @@
 #pragma once
-#include "MyString.h"
-
-template<typename Object>
-class Hash
-{
-public:
-    unsigned int operator()(const Object& elem)
-    {
-        return (unsigned int)elem;
-    }
-};
+#include "MyFunction.h"
 
 template<typename Object,typename KeyHash=Hash<Object>>
 class HashTable
 {
+    friend CTest; //先开放给测试类,方便测试
 private:
     struct Node
     {
@@ -92,6 +83,7 @@ inline HashTable<Object, KeyHash>::~HashTable()
             releaseTable(hashTable[i]);
     }
     delete[] hashTable;
+    hashTable = nullptr;
 }
 
 template<typename Object,typename KeyHash>

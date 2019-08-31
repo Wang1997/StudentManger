@@ -17,13 +17,22 @@ public:
     ~CMyInputException();
 };
 
-//查找异常
+//查找不到异常
 class CMyNotFindException : public CMyException
 {
 public:
     CMyNotFindException(char *msg);
     ~CMyNotFindException();
 };
+
+//重复异常
+class CMyRepeatException : public CMyException
+{
+public:
+    CMyRepeatException(char *msg);
+    ~CMyRepeatException();
+};
+
 
 
 //文件操作异常

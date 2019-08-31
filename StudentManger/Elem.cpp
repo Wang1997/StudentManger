@@ -62,6 +62,16 @@ CElem & CElem::operator=(const CElem & other)
     return *this;
 }
 
+CStudent * CElem::getStudent() const
+{
+    return m_student;
+}
+
+CPostion * CElem::getPostion() const
+{
+    return m_postion;
+}
+
 void CElem::initRef()
 {
     m_ref = CRef::getInstance();

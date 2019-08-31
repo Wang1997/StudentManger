@@ -77,3 +77,8 @@ void CStudent::initMaxId(uInt maxId)
 {
     MAX_ID = maxId;
 }
+
+int CStudent::calcTotalSize(int nameLen)
+{
+    return BASE_SIZE + nameLen + 1; //╪сио \0
+}

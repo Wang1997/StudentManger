@@ -15,6 +15,9 @@ public:
     CElem(const CElem& other);
     CElem& operator= (const CElem& other);
 
+    CStudent * getStudent() const;
+    CPostion * getPostion() const;
+
 private:
     void initRef(); //初始化引用计数
     void release(); //销毁空间

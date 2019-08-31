@@ -1,28 +1,18 @@
 #pragma once
 #include "MyStack.hpp"
 #include "MyQueue.hpp"
+#include "MyFunction.h"
+#include "MyException.h"
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
-template<typename Object>
-class TreeCompare
-{
-public:
-    int operator()(const Object& t1, const Object& t2)
-    {
-        if(t1 > t2)
-            return 1;
-        else if(t1 < t2)
-            return -1;
-        else
-            return 0;
-    }
-};
+class CTest;
 
 //AVL 非递归版实现 可支持重复插入
 template<typename TYPE,typename KeyCompare = TreeCompare<TYPE>>
 class AVLTree
 {
+    friend CTest; //先开放给测试类,方便测试
     typedef void(*showFun)(TYPE& elem, int height); //打印回调
 private:
     typedef struct Node
@@ -116,6 +106,9 @@ inline AVLTree<TYPE, KeyCompare>::AVLTree()
 template<typename TYPE, typename KeyCompare>
 inline AVLTree<TYPE, KeyCompare>::~AVLTree()
 {
+    if(root == nullptr)
+        return;
+
     MyQueue<PNode> queue;
     queue.push(root);
     while (!queue.empty())
@@ -408,6 +401,10 @@ inline void AVLTree<TYPE, KeyCompare>::insert_(PNode tree, const TYPE & elem, bo
                 newNode->next = tree->next;
                 newNode->prev = tree;
                 tree->next = newNode;
+            }
+            else
+            {
+                throw CMyRepeatException("有重复元");
             }
             return; 
         }

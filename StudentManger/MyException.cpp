@@ -22,6 +22,13 @@ CMyNotFindException::~CMyNotFindException()
 {
 }
 
+CMyRepeatException::CMyRepeatException(char *msg) :CMyException(msg)
+{
+}
+CMyRepeatException::~CMyRepeatException()
+{
+}
+
 CMyFileException::CMyFileException(char *msg) :CMyException(msg)
 {
 }

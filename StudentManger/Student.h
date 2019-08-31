@@ -30,7 +30,8 @@ public:
     
 public:
     static void initMaxId(uInt maxId);
-
+    static int calcTotalSize(int nameLen);
+    static const uInt BASE_SIZE; //除姓名以外的字节大小
 private:
     uInt m_id;
     uShort m_year;
@@ -39,6 +40,5 @@ private:
     CMyString m_name;
 
     static uInt MAX_ID;
-    static const uInt BASE_SIZE; //除姓名以外的字节大小
 };
 
