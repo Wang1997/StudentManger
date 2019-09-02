@@ -63,7 +63,7 @@ CMyString & CMyString::operator=(const char *buf)
     return *this = str;
 }
 
-int CMyString::length()
+int CMyString::length() const
 {
     return m_len;
 }

@@ -41,6 +41,8 @@ public: //该迭代器用于遍历重复元素的链表
         bool operator==(const Iterator& it);
         bool operator!=(const Iterator& it);
         bool isEnd(); //没有存尾指针,所以提供该方法
+    public:
+        Iterator();
     private:
         Iterator(PNode current); //私有化
     private:
@@ -219,6 +221,15 @@ inline typename AVLTree<TYPE, KeyCompare>::Iterator
                 node->father->left = next;
             else
                 node->father->right = next;
+        }
+        //儿子关联
+        if (node->left != nullptr)
+        {
+            node->left->father = next;
+        }
+        if (node->right != nullptr)
+        {
+            node->right->father = next;
         }
         delete node;
     }
@@ -399,6 +410,10 @@ inline void AVLTree<TYPE, KeyCompare>::insert_(PNode tree, const TYPE & elem, bo
             {
                 PNode newNode = new Node(elem);
                 newNode->next = tree->next;
+                if (tree->next != nullptr)
+                {
+                    tree->next->prev = newNode;
+                }
                 newNode->prev = tree;
                 tree->next = newNode;
             }
@@ -467,23 +482,26 @@ inline void AVLTree<TYPE, KeyCompare>::remove_(PNode tree)
     if (tree == root)
     {
         root = (tree->left != nullptr) ? tree->left : tree->right;
-        root->father = nullptr;
+        if(root != nullptr)
+            root->father = nullptr;
         releaseNode(delNode);
         balance(root);
     }
     else
     {
         PNode father = tree->father;
+        PNode child = 
+            (tree->left != nullptr) ? tree->left : tree->right;
         if (father->left == tree)
         {
-            father->left =
-                (tree->left != nullptr) ? tree->left : tree->right;
+            father->left = child;
         }
         else
         {
-            father->right =
-                (tree->left != nullptr) ? tree->left : tree->right;
+            father->right = child;
         }
+        if(child != nullptr)
+            child->father = father;
         releaseNode(delNode);
         balance(father);
     }
@@ -720,4 +738,10 @@ template<typename TYPE, typename KeyCompare>
 inline bool AVLTree<TYPE, KeyCompare>::Iterator::isEnd()
 {
     return current == nullptr;
+}
+
+template<typename TYPE, typename KeyCompare>
+inline AVLTree<TYPE, KeyCompare>::Iterator::Iterator()
+    :current(nullptr)
+{
 }

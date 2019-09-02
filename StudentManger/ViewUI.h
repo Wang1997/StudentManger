@@ -8,7 +8,8 @@ class CViewUI
 {
 public:
     template<typename TYPE>
-    static void show(TYPE& data,bool flag=false);
+    static void show(TYPE& data);
+    static void show(char* format, ...);
     template<typename TYPE>
     static TYPE input();
     static void input(char* data,int maxLen);
@@ -19,11 +20,9 @@ public:
 };
 
 template<typename TYPE>
-void CViewUI::show(TYPE& data, bool flag)
+void CViewUI::show(TYPE& data)
 {
     std::cout << data;
-    if(flag)
-        newLine();
 }
 
 template<typename TYPE>

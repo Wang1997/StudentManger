@@ -8,13 +8,13 @@ CStudent::CStudent(int id)
 {
 }
 
-CStudent::CStudent(uShort year, uChar month, uChar sex, CMyString name)
+CStudent::CStudent(const CMyString& name, uChar sex, uShort year, uChar month)
     :m_id(MAX_ID),m_year(year),m_month(month),m_sex(sex),m_name(name)
 {
     ++MAX_ID; //id×ÔÔö
 }
 
-CStudent::CStudent(CMyString name)
+CStudent::CStudent(const CMyString& name)
     :m_name(name)
 {
 }
@@ -63,7 +63,7 @@ const CMyString & CStudent::getName() const
     return m_name;
 }
 
-void CStudent::setName(CMyString & name)
+void CStudent::setName(const CMyString & name)
 {
     m_name = name;
 }

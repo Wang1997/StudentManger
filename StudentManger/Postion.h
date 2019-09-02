@@ -7,6 +7,7 @@
 class CPostion
 {
 public:
+    CPostion();
     CPostion(int pos,int size);
     CPostion(int size);
     ~CPostion();
@@ -14,6 +15,9 @@ public:
 public:
     int getPos() const;
     int getSize() const;
+    
+    CPostion& operator++ ();
+    CPostion& operator++ (int);
 
 private:
     int m_pos; //Œª÷√

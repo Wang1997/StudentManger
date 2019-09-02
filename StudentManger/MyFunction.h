@@ -1,7 +1,6 @@
 #pragma once
 #include "Elem.h"
 #include "Config.h"
-
 /*
 存放一些仿函数
 */
@@ -28,8 +27,8 @@ class TreeCompare<CElem>
 public:
     int operator()(const CElem& t1, const CElem& t2)
     {
-        int t1Id = t1.getStudent()->getId();
-        int t2Id = t2.getStudent()->getId();
+        int t1Id = t1.getStudent()->getId() % CConfig::IDHashMult;
+        int t2Id = t2.getStudent()->getId() % CConfig::IDHashMult;
         if (t1Id > t2Id)
             return 1;
         else if (t1Id < t2Id)

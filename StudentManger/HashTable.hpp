@@ -158,6 +158,7 @@ inline void HashTable<Object, KeyHash>::releaseTable(Node * hashTableNode)
         Node *next = hashTableNode->next;
         delete hashTableNode;
         hashTableNode = next;
+        --size;
     }
 }
 

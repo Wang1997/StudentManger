@@ -67,7 +67,8 @@ void CTest::test2()
     for (int i = 1; i <= 1000000; ++i)
     {
         CElem elem(i);
-        tree.insert_unique(elem); //7-2 6~8s
+        //tree.insert_unique(elem); //7-2 6~8s
+        tree.insert_equal(elem); //5s - 2s
     }
     cout << "数据生成完毕(中序)" << endl;
 }
@@ -94,7 +95,8 @@ void CTest::test3()
     {
         int rId = idQueuqe.front();
         CElem elem(rId);
-        tree.insert_unique(elem); // 9 - 3 s
+        //tree.insert_unique(elem); // 9 - 3 s
+        tree.insert_equal(elem); // 5s - 2s
         idQueuqe.pop();
         int leftId = rId - CConfig::SquareArr[MaxHeight - Level];
         idQueuqe.push(leftId);

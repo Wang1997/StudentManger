@@ -36,9 +36,10 @@ CElem::~CElem()
 }
 
 CElem::CElem(const CElem & other)
+    :m_student(other.m_student),m_postion(other.m_postion),
+     m_ref(other.m_ref)
 {
     //Ç³¿½±´
-    memcpy(this, &other, sizeof(CElem));
     m_ref->addRef(); //¼ÆÊý+1
 }
 

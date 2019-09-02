@@ -14,7 +14,7 @@ public:
     CMyString& operator= (const char*);
 
 public: //Capacity
-    int length(); //求长度
+    int length() const; //求长度
     bool isEmpty(); //是否为空
     void clear(); //清空
 

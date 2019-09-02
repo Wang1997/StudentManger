@@ -10,10 +10,13 @@ public:
     static short randomYear();
     static char randomMonth();
 
+    static int strToInt(char *str);
+
     template<typename Type>
     static void write(char*& dest,Type src);
     static void write(char*& dest,const char* src);
     static void write(char*& dest, void* src,int size);
+    static void write(void* dest, void* src, int size);
 
     template<typename Type>
     static Type read(void* src);

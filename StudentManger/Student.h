@@ -12,8 +12,8 @@ class CStudent
 {
 public:
     CStudent(int id);
-    CStudent(uShort year,uChar month,uChar sex,CMyString name);
-    CStudent(CMyString name);
+    CStudent(const CMyString& name, uChar sex, uShort year,uChar month);
+    CStudent(const CMyString& name);
     ~CStudent();
 
     uInt getId() const;
@@ -24,7 +24,7 @@ public:
     uChar getSex() const;
     void setSex(uChar sex);
     const CMyString& getName() const;
-    void setName(CMyString& name);
+    void setName(const CMyString& name);
 
     int getTotalSize();
     
