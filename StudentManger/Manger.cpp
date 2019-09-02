@@ -14,6 +14,8 @@ CManger::CManger() :m_HashByName(CConfig::NameTableSize),
 
 CManger::~CManger()
 {
+    CViewUI::clearScreen();
+    CViewUI::show("正在退出,请稍后...\r\n");
 }
 
 void CManger::start()

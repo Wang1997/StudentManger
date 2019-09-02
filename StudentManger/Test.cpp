@@ -17,11 +17,11 @@ CTest::~CTest()
 {
 }
 
-void CTest::test1()
+int CTest::test1()
 {
     cout << "开始生成hash数据" << endl;
-    const int size = 29989;
-    //const int size = 39989;
+    //const int size = 29989;
+    const int size = 39989;
     srand(time(NULL));
     int randomStrLen = strlen(CConfig::RandomNameStr);
     HashTable<CElem, Hash<CElem>> table(size);
@@ -58,6 +58,7 @@ void CTest::test1()
     }
     cout << "最大结点链表数: " << maxNum << endl; //62 60 ~ 70 之间波动
     cout << "最小结点链表数: " << minNum << endl; //12 10 ~ 20 之间波动
+    return maxNum * 10000 + minNum;
 }
 
 void CTest::test2()
@@ -107,4 +108,80 @@ void CTest::test3()
             ++Level;
     }
     cout << "数据生成完毕(层序)" << endl;
+}
+
+/*
+100份测试数据分布结果
+
+size = 29989
+最大结点链表数结果:
+范围: max: 69 ,min: 57
+次数最多为: 60 ,出现了: 23次
+最小结点链表数结果:
+范围: max: 14 ,min: 8
+次数最多为: 12 ,出现了: 34次
+
+size=39989
+最大结点链表数结果:
+范围: max: 56 ,min: 46
+次数最多为: 48 ,出现了: 26次
+最小结点链表数结果:
+范围: max: 8 ,min: 4
+次数最多为: 7 ,出现了: 44次
+*/
+
+void CTest::test4()
+{
+    int arrMax[10000] = { 0 };
+    int arrMin[10000] = { 0 };
+    for (int i = 1; i <= 100; ++i)
+    {
+        int res = test1();
+        int maxNum = res / 10000;
+        int minNum = res % 10000;
+        ++arrMin[minNum];
+        ++arrMax[maxNum];
+    }
+    int MinMin = 0x7fffffff;
+    int MinMax = 0;
+    int MaxMin = 0x7fffffff;
+    int MaxMax = 0;
+
+    int Min_MaxCounts = 0;
+    int Min_MaxIndex = 0;
+    int Max_MaxCounts = 0;
+    int Max_MaxIndex = 0;
+
+    for (int i = 0; i < 10000; ++i)
+    {
+        if (arrMin[i] != 0)
+        {
+            MinMax = i;
+            if(MinMin == 0x7fffffff)
+                MinMin = i;
+            if (arrMin[i] >= Min_MaxCounts)
+            {
+                Min_MaxCounts = arrMin[i];
+                Min_MaxIndex = i;
+            }
+        }
+            
+        if (arrMax[i] != 0)
+        {
+            MaxMax = i;
+            if (MaxMin == 0x7fffffff)
+                MaxMin = i;
+            if (arrMax[i] >= Max_MaxCounts)
+            {
+                Max_MaxCounts = arrMax[i];
+                Max_MaxIndex = i;
+            }
+        }
+    }
+    cout<<"最大结点链表数结果:"<<endl;
+    cout<<"范围: max: " << MaxMax << " ,min: " << MaxMin << endl;
+    cout<<"次数最多为: " << Max_MaxIndex << " ,出现了: " << Max_MaxCounts << "次"<<endl;
+    cout << "最小结点链表数结果:" << endl;
+    cout << "范围: max: " << MinMax << " ,min: " << MinMin << endl;
+    cout << "次数最多为: " << Min_MaxIndex << " ,出现了: " << Min_MaxCounts << "次" << endl;
 }

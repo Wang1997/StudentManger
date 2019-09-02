@@ -9,8 +9,9 @@ public:
     CTest();
     ~CTest();
 
-    static void test1(); //hash ĞÕÃû³åÍ»²âÊÔ
+    static int test1(); //hash ĞÕÃû³åÍ»²âÊÔ
     static void test2(); //Ê÷Ë³Ğò²åÈë²âÊÔ
     static void test3(); //Ê÷²ãĞò²åÈë²âÊÔ
+    static void test4(); //hashÊı¾İÁ¿²âÊÔ
 };
 

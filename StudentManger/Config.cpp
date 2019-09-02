@@ -1,8 +1,8 @@
 #include "Config.h"
 
 const char *CConfig::FilePath = "./data.bin"; //文件路径
-const int CConfig::InitDataNum = 16; //1000000 初始数据量(学生数量)
-const int CConfig::IDHashMult = 8; //100000 id多重值
+const int CConfig::InitDataNum = 1000000; //1000000 初始数据量(学生数量)
+const int CConfig::IDHashMult = 10000; //100000 id多重值
 const int CConfig::IDDelFlag = -1; //id删除标志
 const int CConfig::SexType = 3; //性别种类
 const int CConfig::MinYear = 1970; //最小年份
@@ -13,7 +13,7 @@ const int CConfig::MinNameLen = 4; //最小名字长度
 const int CConfig::MaxNameLen = 10; //最大名字长度
 const char *CConfig::RandomNameStr = 
     "qwert0yuyi1iop2asdf3ghjk4lzxcvb5nmWERT6YUIO7PASD8FGHJ9KKLZXCVBNM"; //名字随机字符串
-const int CConfig::NameTableSize = 3;//29989 名字表大小
+const int CConfig::NameTableSize = 39989;//29989 名字表大小
 const int CConfig::NameHashMult = 31; //名字哈希值
 const int CConfig::DelTableSize = 20; //删除表大小
 const int CConfig::PosFindTimes = 3; //位置查找次数
