@@ -175,6 +175,7 @@ void CManger::addControl()
     if (addStudent(pStu))
     {
         CViewUI::show("添加成功\r\n");
+        CViewUI::show("该学生分配的ID为:%d\r\n",pStu->getId());
     }
     else
     {

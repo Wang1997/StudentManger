@@ -2,7 +2,6 @@
 #include "MyStack.hpp"
 #include "MyQueue.hpp"
 #include "MyFunction.h"
-#include "MyException.h"
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
@@ -417,10 +416,10 @@ inline void AVLTree<TYPE, KeyCompare>::insert_(PNode tree, const TYPE & elem, bo
                 newNode->prev = tree;
                 tree->next = newNode;
             }
-            else
+            /*else
             {
                 throw CMyRepeatException("ÓÐÖØ¸´Ôª");
-            }
+            }*/
             return; 
         }
     }

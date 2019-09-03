@@ -3,10 +3,11 @@
 #include "Test.h"
 using namespace std;
 
-#define MYDEBUG
+//#define MYDEBUG
 
 int main(int argc,char *argv[])
 {
+
 #ifdef MYDEBUG //²âÊÔÊı¾İ
     //CTest::test1();
     //CTest::test2();
